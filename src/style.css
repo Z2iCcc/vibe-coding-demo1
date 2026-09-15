@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+/* Tailwind v4 的 dark: 默认走 @media (prefers-color-scheme)，不认 class。
+   改成基于 .dark 类，才能用手动按钮切换，而不是只能跟随系统。 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+/* 让原生滚动条和表单控件也进入深色 */
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
