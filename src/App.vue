@@ -5,9 +5,9 @@ import TaskList from './components/TaskList.vue'
 import TaskModal from './components/TaskModal.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
 import { TASK_STATUS_META } from './constants/taskMeta'
-import { addTask, deleteTask, saveFailed, tasks, toggleTask, updateTask } from './stores/taskStore'
+import { addTask, deleteTask, saveFailed, showGuide, tasks, toggleTask, updateTask } from './stores/taskStore'
 import { TASK_STATUSES, type TaskStatus } from './types/task'
-import { clearTasks } from './utils/storage'
+import { clearTasks, clearVisited } from './utils/storage'
 
 /* ---------- 视图切换 ---------- */
 
@@ -61,6 +61,8 @@ onErrorCaptured((error) => {
 
 function resetLocalData() {
   clearTasks()
+  // 访问标记也一起清掉，不然「恢复到初始状态」之后引导不会再出现，和按钮上的说明对不上
+  clearVisited()
   location.reload()
 }
 
@@ -275,6 +277,7 @@ function openModal() {
         <TaskList
           v-if="view === 'list'"
           :tasks="tasks"
+          :show-guide="showGuide"
           @toggle="toggleTask"
           @delete="deleteTask"
           @add="showModal = true"

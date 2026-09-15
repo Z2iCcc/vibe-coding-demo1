@@ -1,10 +1,20 @@
 import { reactive, ref, watch } from 'vue'
 import type { Task } from '../types/task'
-import { loadTasks, saveTasks } from '../utils/storage'
+import { isFirstVisit, loadTasks, markVisited, saveTasks } from '../utils/storage'
 
 // 首次进入不再铺示例任务了，改为在空列表位置显示用法引导卡片（TaskGuide.vue）。
 // 好处是新用户看到的不是三条假数据，而是「这个页面怎么用」。
 export const tasks = reactive<Task[]>(loadTasks())
+
+/**
+ * 落盘失败了（配额超限、隐私模式、storage 被禁用）。
+ * 界面据此给用户一个提示 —— 否则他继续操作、刷新后数据全没了，全程没有任何反馈。
+ */
+export const saveFailed = ref(false)
+
+function persist(current: Task[]) {
+  saveFailed.value = !saveTasks(current)
+}
 
 /**
  * 一次性清理：老版本首次使用时会自动创建 3 条示例任务，id 是 sample-*。
@@ -24,19 +34,28 @@ function removeLegacySampleTasks(): boolean {
   return removed
 }
 
-/**
- * 落盘失败了（配额超限、隐私模式、storage 被禁用）。
- * 界面据此给用户一个提示 —— 否则他继续操作、刷新后数据全没了，全程没有任何反馈。
- */
-export const saveFailed = ref(false)
-
-function persist(current: Task[]) {
-  saveFailed.value = !saveTasks(current)
-}
-
 // 得手动落盘一次：下面的 watch 只监听「注册之后」的改动，
 // 清理发生在那之前，不补这一下的话界面干净了、存储里那 3 条还在。
+// 这一步必须排在下面判断「是不是新用户」之前 —— 判断要看清理后的条数。
 if (removeLegacySampleTasks()) persist(tasks)
+
+/**
+ * 用法引导是否显示。
+ *
+ * 两个条件都要满足：
+ * 1. 这个浏览器没来过（isFirstVisit）。取完结果立刻写标记，
+ *    这次之后它一直是 false，列表再空也只会是一句安静的空状态。
+ * 2. 清理完之后一条任务都没有。手上有真实任务的用户显然不是新用户，
+ *    不该因为刚升级、标记还不存在就被当成新人；反过来，只存过那 3 条
+ *    示例数据的浏览器，清完就是空列表，按新用户对待正好。
+ *
+ * 标记和任务数据分开存，所以「用户把任务删光了」不会被误判成新用户。
+ */
+const firstVisit = isFirstVisit()
+
+export const showGuide = ref(firstVisit && tasks.length === 0)
+
+if (firstVisit) markVisited()
 
 /**
  * 防抖落盘：每次改动都全量 JSON.stringify + 同步 setItem 是阻塞主线程的，
@@ -71,6 +90,8 @@ window.addEventListener('pagehide', flush)
 /** 新建：插到最前面 */
 export function addTask(task: Task): void {
   tasks.unshift(task)
+  // 真的建过任务就算上手了。不收这个尾的话，他建完又删光，引导会在同一个会话里再弹一次
+  showGuide.value = false
 }
 
 /** 局部更新：只覆盖传入的字段 */

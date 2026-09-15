@@ -11,6 +11,7 @@
 - 深色模式，跟随系统或手动切换，选择会被记住
 - 响应式：手机上三列看板变单列、弹窗变底部滑出、导航栏收成汉堡菜单
 - 数据持久化到 localStorage，刷新不丢
+- 首次使用显示用法引导卡片，之后不再出现
 
 ## 开发
 
@@ -36,6 +37,7 @@ src/
 ├── components/
 │   ├── TaskCard.vue         单条任务卡片
 │   ├── TaskList.vue         列表视图
+│   ├── TaskGuide.vue        首次使用的用法引导卡片
 │   ├── KanbanBoard.vue      看板视图（原生拖拽）
 │   ├── TaskModal.vue        新建任务弹窗 / 手机端底部抽屉
 │   └── ThemeToggle.vue      深色模式开关
@@ -52,5 +54,5 @@ src/
 
 - **看板在触屏上拖不动。** 拖拽用的是 HTML5 原生拖拽 API（`dragstart` / `dragover` / `drop`），这套事件在 iOS Safari 和 Android Chrome 上不会被触摸触发，是浏览器行为。手机上目前只能查看、不能换列。
 - **没有类型检查。** 项目里没有 `tsconfig.json`，也没装 `typescript` / `vue-tsc`，`npm run build` 只做打包不做类型校验。`.ts` 和 `lang="ts"` 目前只在编辑器里提供提示。
-- **数据只在本机。** 没有后端，换浏览器或清缓存数据就没了。localStorage 的键名是 `vibe-coding-runoob-tasks`。
+- **数据只在本机。** 没有后端，换浏览器或清缓存数据就没了。用了两个 localStorage 键：任务数据 `vibe-coding-runoob-tasks`，以及「来过一次了」标记 `vibe-coding-runoob-visited`（决定要不要显示首次引导，删掉它引导就会重新出现）。
 - **localStorage 不可用时只能降级为内存态。** 隐私模式、存储被策略拦截、配额写满等情况会有顶部提示，但改动无法保存。

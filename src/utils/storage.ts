@@ -5,6 +5,12 @@ import { TASK_PRIORITIES, TASK_STATUSES } from '../types/task'
 export const STORAGE_KEY = 'vibe-coding-runoob-tasks'
 
 /**
+ * 「来过一次了」标记的键名。用法引导只在第一次进入时显示，
+ * 之后哪怕任务被删光也不会再弹出来教育一遍。
+ */
+export const VISITED_KEY = 'vibe-coding-runoob-visited'
+
+/**
  * 逐字段校验一条记录。
  *
  * localStorage 是同源共享的，任何脚本、扩展、或者用户自己打开 DevTools 都能往里写，
@@ -67,11 +73,46 @@ export function loadTasks(): Task[] {
   }
 }
 
-/** 清空存储。读取已经坏掉、需要重置时用 */
+/** 清空任务。读取已经坏掉、需要重置时用 */
 export function clearTasks(): void {
   try {
     localStorage.removeItem(STORAGE_KEY)
   } catch (error) {
     console.error('[storage] 清空任务失败：', error)
+  }
+}
+
+/**
+ * 是不是第一次使用。
+ *
+ * 读不到 localStorage（隐私模式、被策略禁用、被 sandbox 的 iframe）时按「第一次」算：
+ * 那种环境下本来就什么都记不住，宁可多给一次引导，也别让新用户什么都看不到。
+ */
+export function isFirstVisit(): boolean {
+  try {
+    return localStorage.getItem(VISITED_KEY) === null
+  } catch {
+    return true
+  }
+}
+
+/**
+ * 记下「已经来过」。和任务数据分开存 —— 用户把任务全删了不代表他没来过，
+ * 合用一个键的话「删光任务」会被误判成新用户，引导又冒出来了。
+ */
+export function markVisited(): void {
+  try {
+    localStorage.setItem(VISITED_KEY, '1')
+  } catch {
+    // 存不进去不影响使用，最多下次再显示一遍引导
+  }
+}
+
+/** 抹掉「来过」标记，让引导重新出现。只在重置本地数据时用 */
+export function clearVisited(): void {
+  try {
+    localStorage.removeItem(VISITED_KEY)
+  } catch (error) {
+    console.error('[storage] 清除访问标记失败：', error)
   }
 }
