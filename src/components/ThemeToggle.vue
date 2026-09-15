@@ -28,7 +28,7 @@ onMounted(() => {
 <template>
   <button
     type="button"
-    class="grid size-11 cursor-pointer place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 sm:size-9 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+    class="grid size-11 cursor-pointer place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 sm:size-9 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
     :aria-label="isDark ? '切换到亮色模式' : '切换到深色模式'"
     :aria-pressed="isDark"
     @click="toggle"

@@ -19,7 +19,7 @@ const isOverdue = computed(() => !isDone.value && task.dueDate < today.value)
 
 <template>
   <article
-    class="group relative flex items-start gap-3 rounded-xl border border-l-4 border-slate-200 bg-white p-4 shadow-sm transition duration-200 hover:z-10 hover:scale-[1.02] hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-black/40"
+    class="group relative flex items-start gap-3 rounded-xl border border-l-4 border-slate-200 bg-white p-4 shadow-sm transition duration-200 hover:z-10 hover:scale-[1.02] hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:shadow-black/40"
     :class="TASK_PRIORITY_META[task.priority].bar"
   >
     <!-- 复选框：点击切换完成状态 -->
@@ -29,7 +29,7 @@ const isOverdue = computed(() => !isDone.value && task.dueDate < today.value)
       :class="
         isDone
           ? 'border-sky-500 bg-sky-500 text-white'
-          : 'border-slate-300 bg-white text-transparent hover:border-sky-400 dark:border-slate-600 dark:bg-slate-900'
+          : 'border-slate-300 bg-white text-transparent hover:border-sky-400 dark:border-zinc-600 dark:bg-zinc-900'
       "
       :aria-label="isDone ? '标记为未完成' : '标记为已完成'"
       :aria-pressed="isDone"
@@ -55,7 +55,7 @@ const isOverdue = computed(() => !isDone.value && task.dueDate < today.value)
         <h3
           class="font-medium"
           :class="
-            isDone ? 'text-slate-400 line-through dark:text-slate-500' : 'text-slate-900 dark:text-slate-100'
+            isDone ? 'text-slate-400 line-through dark:text-zinc-500' : 'text-slate-900 dark:text-zinc-100'
           "
         >
           {{ task.title }}
@@ -78,7 +78,7 @@ const isOverdue = computed(() => !isDone.value && task.dueDate < today.value)
           <!-- 删除按钮 -->
           <button
             type="button"
-            class="relative ml-0.5 grid size-6 cursor-pointer place-items-center rounded-md text-slate-300 transition before:absolute before:-inset-2.5 before:content-[''] hover:bg-rose-50 hover:text-rose-500 sm:before:hidden dark:text-slate-600 dark:hover:bg-rose-950 dark:hover:text-rose-400"
+            class="relative ml-0.5 grid size-6 cursor-pointer place-items-center rounded-md text-slate-300 transition before:absolute before:-inset-2.5 before:content-[''] hover:bg-rose-50 hover:text-rose-500 sm:before:hidden dark:text-zinc-600 dark:hover:bg-rose-950 dark:hover:text-rose-400"
             aria-label="删除任务"
             @click="emit('delete', task.id)"
           >
@@ -97,9 +97,9 @@ const isOverdue = computed(() => !isDone.value && task.dueDate < today.value)
         </div>
       </div>
 
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ task.description }}</p>
+      <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">{{ task.description }}</p>
 
-      <div class="mt-3 flex items-center gap-3 text-xs text-slate-400 dark:text-slate-500">
+      <div class="mt-3 flex items-center gap-3 text-xs text-slate-400 dark:text-zinc-500">
         <span>截止 {{ formatDate(task.dueDate) }}</span>
         <span v-if="isOverdue" class="font-medium text-rose-500 dark:text-rose-400">已逾期</span>
       </div>

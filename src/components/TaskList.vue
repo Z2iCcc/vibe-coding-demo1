@@ -59,7 +59,7 @@ const counts = computed(() => {
         :class="
           active === filter.value
             ? 'bg-sky-500 text-white shadow-sm'
-            : 'bg-white text-slate-600 ring-1 ring-slate-200 ring-inset hover:bg-sky-50 hover:text-sky-700 dark:bg-slate-900 dark:text-slate-300 dark:ring-slate-700 dark:hover:bg-slate-800 dark:hover:text-sky-300'
+            : 'bg-white text-slate-600 ring-1 ring-slate-200 ring-inset hover:bg-sky-50 hover:text-sky-700 dark:bg-zinc-900 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-sky-300'
         "
         :aria-pressed="active === filter.value"
         @click="active = filter.value"
@@ -83,9 +83,9 @@ const counts = computed(() => {
     <!-- 空状态：一个任务都没有 -->
     <div
       v-else-if="!tasks.length"
-      class="rounded-xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center dark:border-slate-800 dark:bg-slate-900"
+      class="rounded-xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center dark:border-zinc-800 dark:bg-zinc-900"
     >
-      <p class="text-sm text-slate-400 dark:text-slate-500">还没有任务，点击下方按钮创建第一个吧</p>
+      <p class="text-sm text-slate-400 dark:text-zinc-500">还没有任务，点击下方按钮创建第一个吧</p>
       <button
         type="button"
         class="mt-4 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-600 sm:min-h-0"
@@ -109,7 +109,7 @@ const counts = computed(() => {
     <!-- 空状态：有任务，但当前筛选没有匹配项 -->
     <p
       v-else
-      class="rounded-xl border border-dashed border-slate-200 bg-white px-6 py-12 text-center text-sm text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-500"
+      class="rounded-xl border border-dashed border-slate-200 bg-white px-6 py-12 text-center text-sm text-slate-400 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500"
     >
       没有「{{ activeLabel }}」状态的任务
     </p>

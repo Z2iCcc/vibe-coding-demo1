@@ -112,7 +112,7 @@ watch(open, async (isOpen) => {
       -->
       <div
         v-show="open"
-        class="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 sm:items-center sm:p-4 sm:backdrop-blur-sm dark:bg-slate-950/70"
+        class="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 sm:items-center sm:p-4 sm:backdrop-blur-sm dark:bg-zinc-950/70"
         @click.self="close"
       >
         <Transition
@@ -128,17 +128,17 @@ watch(open, async (isOpen) => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="task-modal-title"
-            class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-white px-6 pt-4 pb-8 shadow-xl sm:rounded-xl sm:py-6 dark:bg-slate-900 dark:ring-1 dark:ring-slate-800"
+            class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-white px-6 pt-4 pb-8 shadow-xl sm:rounded-xl sm:py-6 dark:bg-zinc-900 dark:ring-1 dark:ring-zinc-800"
           >
             <!-- 底部抽屉的拖拽把手，仅手机显示 -->
             <div
-              class="mx-auto mb-4 h-1 w-10 shrink-0 rounded-full bg-slate-300 sm:hidden dark:bg-slate-700"
+              class="mx-auto mb-4 h-1 w-10 shrink-0 rounded-full bg-slate-300 sm:hidden dark:bg-zinc-700"
               aria-hidden="true"
             />
 
             <h2
               id="task-modal-title"
-              class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+              class="text-lg font-semibold tracking-tight text-slate-900 dark:text-zinc-100"
             >
               新建任务
             </h2>
@@ -148,7 +148,7 @@ watch(open, async (isOpen) => {
               <div>
                 <label
                   for="task-title"
-                  class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                  class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-zinc-300"
                 >
                   标题 <span class="text-rose-500">*</span>
                 </label>
@@ -161,11 +161,11 @@ watch(open, async (isOpen) => {
                   placeholder="想做什么？"
                   :aria-invalid="!!error"
                   aria-describedby="task-title-error"
-                  class="w-full rounded-lg border bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:ring-2 sm:py-2 sm:text-sm dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
+                  class="w-full rounded-lg border bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:ring-2 sm:py-2 sm:text-sm dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                   :class="
                     error
                       ? 'border-rose-400 focus:border-rose-400 focus:ring-rose-100 dark:border-rose-500 dark:focus:ring-rose-950'
-                      : 'border-slate-200 focus:border-sky-400 focus:ring-sky-100 dark:border-slate-700 dark:focus:border-sky-500 dark:focus:ring-sky-950'
+                      : 'border-slate-200 focus:border-sky-400 focus:ring-sky-100 dark:border-zinc-700 dark:focus:border-sky-500 dark:focus:ring-sky-950'
                   "
                   @input="error = ''"
                 />
@@ -183,10 +183,10 @@ watch(open, async (isOpen) => {
               <div>
                 <label
                   for="task-description"
-                  class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                  class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-zinc-300"
                 >
                   描述
-                  <span class="font-normal text-slate-400 dark:text-slate-500">（选填）</span>
+                  <span class="font-normal text-slate-400 dark:text-zinc-500">（选填）</span>
                 </label>
                 <textarea
                   id="task-description"
@@ -194,7 +194,7 @@ watch(open, async (isOpen) => {
                   rows="3"
                   maxlength="500"
                   placeholder="补充一些细节…"
-                  class="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-100 sm:py-2 sm:text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-sky-500 dark:focus:ring-sky-950"
+                  class="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-100 sm:py-2 sm:text-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-sky-500 dark:focus:ring-sky-950"
                 />
               </div>
 
@@ -202,14 +202,14 @@ watch(open, async (isOpen) => {
               <div>
                 <label
                   for="task-priority"
-                  class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                  class="mb-1.5 block text-sm font-medium text-slate-700 dark:text-zinc-300"
                 >
                   优先级
                 </label>
                 <select
                   id="task-priority"
                   v-model="form.priority"
-                  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 sm:py-2 sm:text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-sky-500 dark:focus:ring-sky-950"
+                  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 sm:py-2 sm:text-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:border-sky-500 dark:focus:ring-sky-950"
                 >
                   <option
                     v-for="option in priorityOptions"
@@ -224,7 +224,7 @@ watch(open, async (isOpen) => {
               <div class="flex justify-end gap-2 pt-2">
                 <button
                   type="button"
-                  class="min-h-11 cursor-pointer rounded-lg px-4 text-sm font-medium text-slate-600 transition hover:bg-slate-100 sm:min-h-0 sm:py-2 dark:text-slate-300 dark:hover:bg-slate-800"
+                  class="min-h-11 cursor-pointer rounded-lg px-4 text-sm font-medium text-slate-600 transition hover:bg-slate-100 sm:min-h-0 sm:py-2 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   @click="close"
                 >
                   取消

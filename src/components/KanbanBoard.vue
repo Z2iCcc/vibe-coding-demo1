@@ -79,7 +79,7 @@ function onDrop(event: DragEvent, status: TaskStatus) {
       :class="
         overStatus === column.status
           ? 'border-sky-400 bg-sky-50 ring-2 ring-sky-100 dark:border-sky-500 dark:bg-sky-950/40 dark:ring-sky-900'
-          : 'border-slate-200 bg-slate-100/60 dark:border-slate-800 dark:bg-slate-900/60'
+          : 'border-slate-200 bg-slate-100/60 dark:border-zinc-800 dark:bg-zinc-900/60'
       "
       @dragover="onDragOver($event, column.status)"
       @dragleave="onDragLeave($event, column.status)"
@@ -87,11 +87,11 @@ function onDrop(event: DragEvent, status: TaskStatus) {
     >
       <header class="mb-3 flex items-center gap-2 px-1">
         <span class="size-2.5 shrink-0 rounded-full" :class="column.dot" aria-hidden="true" />
-        <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+        <h3 class="text-sm font-semibold text-slate-700 dark:text-zinc-300">
           {{ column.label }}
         </h3>
         <span
-          class="ml-auto rounded-full bg-white px-2 py-0.5 text-xs font-medium text-slate-500 ring-1 ring-slate-200 ring-inset dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-700"
+          class="ml-auto rounded-full bg-white px-2 py-0.5 text-xs font-medium text-slate-500 ring-1 ring-slate-200 ring-inset dark:bg-zinc-800 dark:text-zinc-400 dark:ring-zinc-700"
         >
           {{ byStatus[column.status].length }}
         </span>
@@ -117,7 +117,7 @@ function onDrop(event: DragEvent, status: TaskStatus) {
         <!-- 空列也要有落点 -->
         <li
           v-if="!byStatus[column.status].length"
-          class="grid flex-1 place-items-center rounded-lg border border-dashed border-slate-300 py-8 text-xs text-slate-400 dark:border-slate-700 dark:text-slate-600"
+          class="grid flex-1 place-items-center rounded-lg border border-dashed border-slate-300 py-8 text-xs text-slate-400 dark:border-zinc-700 dark:text-zinc-600"
         >
           拖拽任务到这里
         </li>

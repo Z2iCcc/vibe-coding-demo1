@@ -80,10 +80,10 @@ function openModal() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <div class="min-h-screen bg-slate-50 text-slate-900 dark:bg-zinc-950 dark:text-zinc-100">
     <!-- 顶部导航栏 -->
     <header
-      class="sticky top-0 z-10 border-b border-sky-100 bg-white/85 backdrop-blur dark:border-slate-800 dark:bg-slate-900/85"
+      class="sticky top-0 z-10 border-b border-sky-100 bg-white/85 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/85"
     >
       <div class="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
         <div class="flex items-center gap-2.5">
@@ -101,7 +101,7 @@ function openModal() {
               <path d="M20 6 9 17l-5-5" />
             </svg>
           </span>
-          <h1 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-zinc-100">
             任务清单
           </h1>
         </div>
@@ -138,7 +138,7 @@ function openModal() {
         <!-- 手机端汉堡按钮 -->
         <button
           type="button"
-          class="grid size-11 cursor-pointer place-items-center rounded-lg text-slate-600 transition hover:bg-slate-100 sm:hidden dark:text-slate-300 dark:hover:bg-slate-800"
+          class="grid size-11 cursor-pointer place-items-center rounded-lg text-slate-600 transition hover:bg-slate-100 sm:hidden dark:text-zinc-300 dark:hover:bg-zinc-800"
           :aria-expanded="menuOpen"
           aria-controls="mobile-menu"
           :aria-label="menuOpen ? '关闭菜单' : '打开菜单'"
@@ -175,7 +175,7 @@ function openModal() {
       <div
         v-show="menuOpen"
         id="mobile-menu"
-        class="border-t border-slate-100 px-4 py-4 sm:hidden dark:border-slate-800"
+        class="border-t border-slate-100 px-4 py-4 sm:hidden dark:border-zinc-800"
       >
         <div class="flex items-center justify-between gap-3">
           <span
@@ -221,13 +221,13 @@ function openModal() {
       <!-- 渲染出错：给一条自救的路，而不是白屏 -->
       <div
         v-if="fatalError"
-        class="rounded-xl border border-rose-200 bg-white px-6 py-12 text-center dark:border-rose-900 dark:bg-slate-900"
+        class="rounded-xl border border-rose-200 bg-white px-6 py-12 text-center dark:border-rose-900 dark:bg-zinc-900"
       >
         <h2 class="text-base font-semibold text-rose-600 dark:text-rose-400">页面出错了</h2>
-        <p class="mx-auto mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
+        <p class="mx-auto mt-2 max-w-md text-sm text-slate-500 dark:text-zinc-400">
           本地保存的任务数据可能已损坏。重置会清空所有任务并恢复到初始状态。
         </p>
-        <p class="mt-3 font-mono text-xs break-all text-slate-400 dark:text-slate-500">
+        <p class="mt-3 font-mono text-xs break-all text-slate-400 dark:text-zinc-500">
           {{ fatalError }}
         </p>
         <button
@@ -242,14 +242,14 @@ function openModal() {
       <template v-else>
         <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+            <h2 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-zinc-100">
               {{ view === 'list' ? '任务列表' : '任务看板' }}
             </h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ statsSummary }}</p>
+            <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">{{ statsSummary }}</p>
           </div>
 
           <!-- 视图切换 -->
-          <div class="flex shrink-0 rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
+          <div class="flex shrink-0 rounded-lg bg-slate-100 p-1 dark:bg-zinc-800">
             <button
               v-for="tab in tabs"
               :key="tab.value"
@@ -257,8 +257,8 @@ function openModal() {
               class="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition sm:min-h-0"
               :class="
                 view === tab.value
-                  ? 'bg-white text-sky-700 shadow-sm dark:bg-slate-700 dark:text-sky-200'
-                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                  ? 'bg-white text-sky-700 shadow-sm dark:bg-zinc-700 dark:text-sky-200'
+                  : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200'
               "
               :aria-pressed="view === tab.value"
               @click="view = tab.value"

@@ -25,7 +25,7 @@ export const TASK_STATUS_META: Record<TaskStatus, TaskStatusMeta> = {
     label: '待办',
     filterLabel: '待办',
     badge:
-      'bg-slate-100 text-slate-600 ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700',
+      'bg-slate-100 text-slate-600 ring-slate-200 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700',
     dot: 'bg-slate-400',
   },
   'in-progress': {
@@ -39,7 +39,7 @@ export const TASK_STATUS_META: Record<TaskStatus, TaskStatusMeta> = {
     label: '已完成',
     filterLabel: '完成',
     badge:
-      'bg-slate-50 text-slate-500 ring-slate-200 dark:bg-slate-800/60 dark:text-slate-400 dark:ring-slate-700',
+      'bg-slate-50 text-slate-500 ring-slate-200 dark:bg-zinc-800/60 dark:text-zinc-400 dark:ring-zinc-700',
     dot: 'bg-emerald-500',
   },
 }
