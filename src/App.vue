@@ -102,7 +102,7 @@ function openModal() {
             </svg>
           </span>
           <h1 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-            Vibe Coding demo1
+            任务清单
           </h1>
         </div>
 
