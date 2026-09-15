@@ -4,6 +4,7 @@ import { TASK_STATUS_META } from '../constants/taskMeta'
 import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
 import { sortByCreatedAtDesc } from '../utils/task'
 import TaskCard from './TaskCard.vue'
+import TaskGuide from './TaskGuide.vue'
 
 const { tasks } = defineProps<{ tasks: Task[] }>()
 
@@ -80,31 +81,8 @@ const counts = computed(() => {
       </li>
     </ul>
 
-    <!-- 空状态：一个任务都没有 -->
-    <div
-      v-else-if="!tasks.length"
-      class="rounded-xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center dark:border-zinc-800 dark:bg-zinc-900"
-    >
-      <p class="text-sm text-slate-400 dark:text-zinc-500">还没有任务，点击下方按钮创建第一个吧</p>
-      <button
-        type="button"
-        class="mt-4 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-600 sm:min-h-0"
-        @click="emit('add')"
-      >
-        <svg
-          class="size-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.2"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M12 5v14M5 12h14" />
-        </svg>
-        创建任务
-      </button>
-    </div>
+    <!-- 空状态：一个任务都没有，显示用法引导 -->
+    <TaskGuide v-else-if="!tasks.length" @add="emit('add')" />
 
     <!-- 空状态：有任务，但当前筛选没有匹配项 -->
     <p

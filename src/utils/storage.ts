@@ -67,21 +67,6 @@ export function loadTasks(): Task[] {
   }
 }
 
-/**
- * 是否存过任务。用来区分「首次使用」（要铺示例数据）和「用户主动删光了」（必须保持为空），
- * 这两种情况 loadTasks() 都返回 []，分不出来。
- *
- * 包了 try/catch：某些环境（企业策略、隐私模式、被 sandbox 的 iframe）下
- * 光是读 localStorage 属性本身就会抛 SecurityError，在模块顶层裸调用的话整个应用白屏。
- */
-export function hasStoredTasks(): boolean {
-  try {
-    return localStorage.getItem(STORAGE_KEY) !== null
-  } catch {
-    return false
-  }
-}
-
 /** 清空存储。读取已经坏掉、需要重置时用 */
 export function clearTasks(): void {
   try {

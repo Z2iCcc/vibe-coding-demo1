@@ -1,43 +1,28 @@
 import { reactive, ref, watch } from 'vue'
 import type { Task } from '../types/task'
-import { hasStoredTasks, loadTasks, saveTasks } from '../utils/storage'
+import { loadTasks, saveTasks } from '../utils/storage'
 
-/** 首次使用时的示例任务，三种状态、三种优先级各覆盖一次 */
-function createSampleTasks(): Task[] {
-  return [
-    {
-      id: 'sample-1',
-      title: '搭建项目骨架',
-      description: '初始化 Vue 3 + Vite + Tailwind CSS，跑通开发环境。',
-      status: 'done',
-      priority: 'high',
-      dueDate: '2026-09-10',
-      createdAt: '2026-09-06',
-    },
-    {
-      id: 'sample-2',
-      title: '实现任务列表界面',
-      description: '用卡片形式展示任务，标注状态与优先级。',
-      status: 'in-progress',
-      priority: 'medium',
-      dueDate: '2026-09-16',
-      createdAt: '2026-09-08',
-    },
-    {
-      id: 'sample-3',
-      title: '接入数据持久化',
-      description: '把任务存进 localStorage，刷新后不丢失。',
-      status: 'todo',
-      priority: 'low',
-      dueDate: '2026-09-24',
-      createdAt: '2026-09-10',
-    },
-  ]
+// 首次进入不再铺示例任务了，改为在空列表位置显示用法引导卡片（TaskGuide.vue）。
+// 好处是新用户看到的不是三条假数据，而是「这个页面怎么用」。
+export const tasks = reactive<Task[]>(loadTasks())
+
+/**
+ * 一次性清理：老版本首次使用时会自动创建 3 条示例任务，id 是 sample-*。
+ * 光删掉生成示例的代码不够 —— 它们已经被写进 localStorage 了，
+ * 访问过的浏览器刷新后还是会看到，所以在这里主动剔除一次。
+ * 注意：如果用户自己改过这几条，改动也会一起没了，这正是本次需求要的效果。
+ * 等确认所有环境都升级过之后，这个函数可以整段删掉。
+ */
+function removeLegacySampleTasks(): boolean {
+  let removed = false
+  for (let i = tasks.length - 1; i >= 0; i--) {
+    if (tasks[i].id.startsWith('sample-')) {
+      tasks.splice(i, 1)
+      removed = true
+    }
+  }
+  return removed
 }
-
-const isFirstRun = !hasStoredTasks()
-
-export const tasks = reactive<Task[]>(isFirstRun ? createSampleTasks() : loadTasks())
 
 /**
  * 落盘失败了（配额超限、隐私模式、storage 被禁用）。
@@ -49,9 +34,9 @@ function persist(current: Task[]) {
   saveFailed.value = !saveTasks(current)
 }
 
-// 首次使用要立刻落盘：watch 只在「变更」时触发，初始化赋值不会触发，
-// 不主动写一次的话键名会一直不存在，「首次使用」状态永远结束不了
-if (isFirstRun) persist(tasks)
+// 得手动落盘一次：下面的 watch 只监听「注册之后」的改动，
+// 清理发生在那之前，不补这一下的话界面干净了、存储里那 3 条还在。
+if (removeLegacySampleTasks()) persist(tasks)
 
 /**
  * 防抖落盘：每次改动都全量 JSON.stringify + 同步 setItem 是阻塞主线程的，

@@ -245,7 +245,10 @@ function openModal() {
             <h2 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-zinc-100">
               {{ view === 'list' ? '任务列表' : '任务看板' }}
             </h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-zinc-400">{{ statsSummary }}</p>
+            <!-- 一条任务都没有时统计全是 0，和下面的引导卡片重复，就不显示了 -->
+            <p v-if="stats.total" class="mt-1 text-sm text-slate-500 dark:text-zinc-400">
+              {{ statsSummary }}
+            </p>
           </div>
 
           <!-- 视图切换 -->
