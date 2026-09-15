@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { TASK_STATUS_META } from '../constants/taskMeta'
+import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
+import { sortByCreatedAtDesc } from '../utils/task'
 import TaskCard from './TaskCard.vue'
-import type { Task, TaskStatus } from '../types/task'
 
 const { tasks } = defineProps<{ tasks: Task[] }>()
 
@@ -11,11 +13,7 @@ const emit = defineEmits<{
   delete: [id: string]
 }>()
 
-const columns: { status: TaskStatus; label: string; accent: string }[] = [
-  { status: 'todo', label: '待办', accent: 'bg-slate-400' },
-  { status: 'in-progress', label: '进行中', accent: 'bg-sky-500' },
-  { status: 'done', label: '已完成', accent: 'bg-emerald-500' },
-]
+const columns = TASK_STATUSES.map((status) => ({ status, ...TASK_STATUS_META[status] }))
 
 /** 正在拖拽的任务 id —— dragover 阶段读不到 dataTransfer，只能靠它判断 */
 const draggingId = ref<string | null>(null)
@@ -24,8 +22,7 @@ const overStatus = ref<TaskStatus | null>(null)
 
 const byStatus = computed(() => {
   const groups: Record<TaskStatus, Task[]> = { todo: [], 'in-progress': [], done: [] }
-  const sorted = [...tasks].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-  for (const task of sorted) {
+  for (const task of sortByCreatedAtDesc(tasks)) {
     groups[task.status]?.push(task)
   }
   return groups
@@ -89,7 +86,7 @@ function onDrop(event: DragEvent, status: TaskStatus) {
       @drop="onDrop($event, column.status)"
     >
       <header class="mb-3 flex items-center gap-2 px-1">
-        <span class="size-2.5 shrink-0 rounded-full" :class="column.accent" aria-hidden="true" />
+        <span class="size-2.5 shrink-0 rounded-full" :class="column.dot" aria-hidden="true" />
         <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">
           {{ column.label }}
         </h3>

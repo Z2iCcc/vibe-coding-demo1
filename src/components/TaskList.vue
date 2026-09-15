@@ -18,7 +18,7 @@ type Filter = TaskStatus | 'all'
 const filters: { value: Filter; label: string }[] = [
   { value: 'all', label: '全部' },
   ...TASK_STATUSES.map((status) => ({
-    value: status as Filter,
+    value: status,
     label: TASK_STATUS_META[status].filterLabel,
   })),
 ]

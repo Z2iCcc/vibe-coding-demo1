@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import type { Task, TaskPriority } from '../types/task'
+import { TASK_PRIORITY_META } from '../constants/taskMeta'
+import { TASK_PRIORITIES, type Task, type TaskPriority } from '../types/task'
+import { todayISO } from '../utils/date'
 
 /** 弹窗开关由父组件通过 v-model 控制 */
 const open = defineModel<boolean>({ required: true })
@@ -19,13 +21,19 @@ const form = reactive<{ title: string; description: string; priority: TaskPriori
 const error = ref('')
 const titleInput = ref<HTMLInputElement | null>(null)
 
-const priorityOptions: { value: TaskPriority; label: string }[] = [
-  { value: 'low', label: '低' },
-  { value: 'medium', label: '中' },
-  { value: 'high', label: '高' },
-]
+const priorityOptions: { value: TaskPriority; label: string }[] = TASK_PRIORITIES.map((value) => ({
+  value,
+  label: TASK_PRIORITY_META[value].label,
+}))
 
-const today = new Date().toISOString().slice(0, 10)
+/**
+ * crypto.randomUUID 只在安全上下文（HTTPS / localhost）存在。
+ * 用 http 打开部署好的站点时它是 undefined，会让「创建」按钮直接抛错 ——
+ * 用户看到的就是点了没反应，所以留一个降级。
+ */
+function createId(): string {
+  return crypto.randomUUID?.() ?? `t-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+}
 
 function reset() {
   form.title = ''
@@ -46,14 +54,17 @@ function submit() {
     return
   }
 
+  // 取一次日期：跨零点时 dueDate 和 createdAt 不应该差一天
+  const date = todayISO()
+
   emit('submit', {
-    id: crypto.randomUUID(),
+    id: createId(),
     title: form.title.trim(),
     description: form.description.trim(),
     status: 'todo',
     priority: form.priority,
-    dueDate: today,
-    createdAt: today,
+    dueDate: date,
+    createdAt: date,
   })
 
   close()
@@ -94,10 +105,14 @@ watch(open, async (isOpen) => {
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
-      <!-- 手机上贴着底部（bottom sheet），sm 以上回到居中 -->
+      <!--
+        手机上贴着底部（bottom sheet），sm 以上回到居中。
+        背景模糊只在桌面开：它每帧都要对整屏做一次模糊采样，而下面正好在播
+        300ms 的滑出动画、内容每帧都在变，手机上等于每帧重算一次全屏模糊，最费 GPU。
+      -->
       <div
         v-show="open"
-        class="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/40 backdrop-blur-sm sm:items-center sm:p-4 dark:bg-slate-950/70"
+        class="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 sm:items-center sm:p-4 sm:backdrop-blur-sm dark:bg-slate-950/70"
         @click.self="close"
       >
         <Transition
@@ -142,7 +157,10 @@ watch(open, async (isOpen) => {
                   ref="titleInput"
                   v-model="form.title"
                   type="text"
+                  maxlength="100"
                   placeholder="想做什么？"
+                  :aria-invalid="!!error"
+                  aria-describedby="task-title-error"
                   class="w-full rounded-lg border bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:ring-2 sm:py-2 sm:text-sm dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
                   :class="
                     error
@@ -151,7 +169,14 @@ watch(open, async (isOpen) => {
                   "
                   @input="error = ''"
                 />
-                <p v-if="error" class="mt-1.5 text-xs font-medium text-rose-500">{{ error }}</p>
+                <p
+                  v-if="error"
+                  id="task-title-error"
+                  role="alert"
+                  class="mt-1.5 text-xs font-medium text-rose-500"
+                >
+                  {{ error }}
+                </p>
               </div>
 
               <!-- 描述（选填） -->
@@ -167,6 +192,7 @@ watch(open, async (isOpen) => {
                   id="task-description"
                   v-model="form.description"
                   rows="3"
+                  maxlength="500"
                   placeholder="补充一些细节…"
                   class="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-100 sm:py-2 sm:text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-sky-500 dark:focus:ring-sky-950"
                 />
